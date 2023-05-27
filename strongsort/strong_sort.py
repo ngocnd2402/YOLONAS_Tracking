@@ -7,7 +7,6 @@ from strongsort.sort.nn_matching import NearestNeighborDistanceMetric
 from strongsort.sort.tracker import Tracker
 
 def xyxy2xywh(x):
-    # Convert nx4 boxes from [x1, y1, x2, y2] to [x, y, w, h] where xy1=top-left, xy2=bottom-right
     y = x.clone() if isinstance(x, torch.Tensor) else np.copy(x)
     y[:, 0] = (x[:, 0] + x[:, 2]) / 2  # x center
     y[:, 1] = (x[:, 1] + x[:, 3]) / 2  # y center
@@ -23,7 +22,7 @@ class StrongSORT(object):
         fp16=False,
         max_dist=0.2,
         max_iou_distance=0.3,
-        max_age=12,
+        max_age=20,
         n_init=3,
         nn_budget=150,
         mc_lambda=0.995,
