@@ -20,17 +20,16 @@ class StrongSORT(object):
         model_weights,
         device,
         fp16=False,
-        max_dist=0.2,
-        max_iou_distance=0.3,
-        max_age=20,
-        n_init=3,
+        max_dist=0.3,
+        max_iou_distance=0.4,
+        max_age=24,
+        n_init=5,
         nn_budget=150,
-        mc_lambda=0.995,
-        ema_alpha=0.9,
+        mc_lambda=0.998,
+        ema_alpha=0.95,
     ):
 
         self.model = ReIDDetectMultiBackend(weights=model_weights, device=device, fp16=fp16)
-
         self.max_dist = max_dist
         metric = NearestNeighborDistanceMetric("cosine", self.max_dist, nn_budget)
         self.tracker = Tracker(metric, max_iou_distance=max_iou_distance, max_age=max_age, n_init=n_init)

@@ -27,7 +27,6 @@ while True:
     results = model.predict(frame)
     detections = []
     for result in results:
-        
         for i, r in enumerate(result.prediction.bboxes_xyxy):
             x1, y1, x2, y2 = r
             x1 = int(x1)
@@ -39,13 +38,14 @@ while True:
             class_id = int(labels)
             if class_id == 0 and score > detection_threshold:
                 detections.append([x1, y1, x2, y2, score])
-            if class_id == 0:
-                cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (102, 0, 204), 2)
-        tracker.update(frame, detections)
-        for track in tracker.tracks:
-            track_id, bbox = track
-            x1, y1, x2, y2 = bbox
-            cv2.putText(frame, str(track_id), (int(x1), int(y1)), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
+                cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (204, 0, 102), 3)
+    tracker.update(frame, detections)
+    
+    for track in tracker.tracks:
+        track_id, bbox = track
+        x1, y1, x2, y2 = bbox
+        cv2.putText(frame, str(track_id), (int(x1), int(y1)), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
+        
     cap_out.write(frame)
     print(f'Finished frame {frame_id}')
     output_path = os.path.join(output_folder, f'frame_{frame_id}.jpg')
