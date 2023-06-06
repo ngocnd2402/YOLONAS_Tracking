@@ -9,8 +9,8 @@ import warnings
 warnings.filterwarnings("ignore")
 
 model = models.get("yolo_nas_m", pretrained_weights="coco")
-frame_dir_path = r"datasets/MOT17/train/MOT17-13-SDP/img1"
-video_out_path = os.path.join('.', 'nas-ds-MOT17-13.mp4')
+frame_dir_path = r"datasets\MOT15\test\ADL-Rundle-3\img1"
+video_out_path = os.path.join('.', 'ds-ADL-Rundle-3.mp4')
 frame_paths = sorted([os.path.join(frame_dir_path, f) for f in os.listdir(frame_dir_path) if f.endswith('.jpg')])
 first_frame = cv2.imread(frame_paths[0])
 height, width, _ = first_frame.shape
@@ -39,12 +39,12 @@ for frame_path in frame_paths:
             class_id = int(labels)
             if class_id == 0 and score > detection_threshold:
                 detections.append([x1, y1, x2, y2, score])
-                cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (204, 0, 102), 3)
     tracker.update(frame, detections)
         
     for track in tracker.tracks:
         track_id, bbox = track
         x1, y1, x2, y2 = bbox
+        cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (204, 0, 102), 3)
         cv2.putText(frame, str(track_id), (int(x1), int(y1)), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
         
     cap_out.write(frame)
