@@ -8,8 +8,8 @@ class deepSORT_Tracker:
     def __init__(self):
         self.max_cosine_distance = 0.3
         self.encoder_model_filename = r'resources/networks/mars-small128.pb'
-        self.nn_budget = 150
-        self.max_age = 24
+        self.nn_budget = 100
+        self.max_age = 15
         self.metric = nn_matching.NearestNeighborDistanceMetric('cosine', self.max_cosine_distance, self.nn_budget)
         self.tracker = Tracker(self.metric, max_age=self.max_age)
         self.encoder = generate_detections.create_box_encoder(self.encoder_model_filename, batch_size=1)

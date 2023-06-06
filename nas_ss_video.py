@@ -10,8 +10,8 @@ import warnings
 
 model = models.get("yolo_nas_m", pretrained_weights="coco")
 warnings.filterwarnings("ignore")
-video_path = os.path.join('.', 'data', 'people.mp4')
-video_out_path = os.path.join('.', 'test2-nas-ss-people.mp4')
+video_path = os.path.join('.', 'data', 'UIT_03.mp4')
+video_out_path = os.path.join('.', 'ss-UIT-03.mp4')
 cap = cv2.VideoCapture(video_path)
 fourcc = cv2.VideoWriter_fourcc(*'MP4V')
 width, height = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -41,18 +41,17 @@ while True:
             labels = result.prediction.labels[i]
             class_id = int(labels)
             if class_id == 0 and score > detection_threshold:
-                cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (204, 0, 102), 3)
-                detections.append([x1, y1, x2, y2, score, class_id])
-                
+                detections.append([x1, y1, x2, y2, score, class_id])            
     tracker.update(torch.Tensor(detections), frame)
     
+    track_ids = []
     for track in tracker.tracker.tracks:
         track_id = track.track_id
+        track_ids.append(track_id)
         box = track.to_tlwh()
         x1, y1, x2, y2 = tracker._tlwh_to_xyxy(box)
+        cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (204, 0, 102), 3)
         cv2.putText(frame, str(track_id), (int(x1), int(y1)), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
-
-    
 
     cap_out.write(frame)
     print(f'Finished frame {frame_id}')

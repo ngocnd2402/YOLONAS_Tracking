@@ -22,11 +22,11 @@ class StrongSORT(object):
         fp16=False,
         max_dist=0.3,
         max_iou_distance=0.4,
-        max_age=24,
+        max_age=20,
         n_init=5,
         nn_budget=150,
-        mc_lambda=0.998,
-        ema_alpha=0.95,
+        mc_lambda=0.995,
+        ema_alpha=0.7,
     ):
 
         self.model = ReIDDetectMultiBackend(weights=model_weights, device=device, fp16=fp16)
